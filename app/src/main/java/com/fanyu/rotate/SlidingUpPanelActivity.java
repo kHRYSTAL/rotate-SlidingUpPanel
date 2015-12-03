@@ -1,6 +1,7 @@
 package com.fanyu.rotate;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
@@ -68,6 +69,20 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // App Logo
+        toolbar.setLogo(R.mipmap.ic_launcher);
+        // Title
+        toolbar.setTitle("My Title");
+        // Sub Title
+        toolbar.setSubtitle("Sub title");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(Color.WHITE);
+
+        setSupportActionBar(toolbar);
+
+        // Navigation Icon 要設定在 setSupoortActionBar 才有作用
+        // 否則會出現 back button
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
         TextView mark_main_tv = (TextView)findViewById(R.id.mark_main_tv);
         mark_main_tv.setOnClickListener(new View.OnClickListener() {
@@ -267,15 +282,24 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
-            return true;
+        String msg = "";
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                msg += "Click edit";
+                break;
+            case R.id.action_share:
+                msg += "Click share";
+                break;
+            case R.id.action_settings:
+                msg += "Click setting";
+                break;
         }
 
-        return super.onOptionsItemSelected(item);
+        if(!msg.equals("")) {
+            Toast.makeText(SlidingUpPanelActivity.this, msg, Toast.LENGTH_SHORT).show();
+        }
+        return true;
+
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
