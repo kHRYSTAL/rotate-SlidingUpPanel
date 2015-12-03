@@ -1,4 +1,4 @@
-package com.fanyu.firstpage;
+package com.fanyu.rotate;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -25,7 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fanyu.firstpage.R;
 import com.kaichunlin.transition.ViewTransitionBuilder;
 import com.kaichunlin.transition.adapter.SlidingUpPanelLayoutAdapter;
 import com.kaichunlin.transition.adapter.UnifiedAdapter;
