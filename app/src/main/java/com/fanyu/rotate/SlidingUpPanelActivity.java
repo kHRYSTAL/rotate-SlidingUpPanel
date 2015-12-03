@@ -227,7 +227,7 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
         builder = baseBuilder.clone();
         builder.scale(0.8f).rotationX(40).translationYAsFractionOfHeight(-1f).buildFor(mUnifiedAdapter);
 
-        builder = baseBuilder.clone().target(findViewById(R.id.ll_content)).rotationX(90f).scale(0.8f).translationYAsFractionOfHeight(-0.4f);
+        builder = baseBuilder.clone().target(findViewById(R.id.ll_content)).rotationX(90f).scale(0.8f).translationYAsFractionOfHeight(-0.35f);
         builder.buildFor(mUnifiedAdapter);
         builder.target(findViewById(R.id.ll_content)).buildFor(mUnifiedAdapter);
 
