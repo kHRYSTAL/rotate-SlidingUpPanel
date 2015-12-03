@@ -1,5 +1,6 @@
 package com.fanyu.rotate;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
@@ -18,10 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +49,16 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
     private Toolbar mToolbar;
     private Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
     private View mLastSelection;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private LinearLayout llContent;
     private Menu mMenu;
     private String curPosition="0.0";
+    private Boolean hasMeasured=false;
+    private TextView mark_main_float;
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +66,42 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.ctl);
-        SlidingUpPanelLayout supl = ((SlidingUpPanelLayout) findViewById(R.id.sliding_layout));
+        TextView mark_main_tv = (TextView)findViewById(R.id.mark_main_tv);
+        mark_main_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SlidingUpPanelActivity.this, "mark_main_tv", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        mark_main_float = (TextView)findViewById(R.id.mark_main_float);
+
+        llContent = (LinearLayout)findViewById(R.id.ll_content);
+        final SlidingUpPanelLayout supl = ((SlidingUpPanelLayout) findViewById(R.id.sliding_layout));
+        supl.setMinFlingVelocity(1000000);
         //supl.setEnableDragViewTouchEvents(false);
+        //supl.setPanelHeight(200);
+
+        //计算屏幕尺寸
+        final LinearLayout ll_content = (LinearLayout) findViewById(R.id.ll_content);
+        ViewTreeObserver vto = ll_content.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+                if (hasMeasured == false) {
+                    int height = ll_content.getMeasuredHeight();
+                    //获取到宽度和高度后，可用于计算
+                    WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
+                    int hSum = wm.getDefaultDisplay().getHeight();
+                    supl.setPanelHeight((int) (hSum-height-toolbar.getHeight()*1.5));
+                    hasMeasured = true;
+                }
+                return true;
+            }
+        });
 
         //set up the adapter
         SlidingUpPanelLayoutAdapter mSlidingUpPanelLayoutAdapter = new SlidingUpPanelLayoutAdapter();
@@ -72,6 +112,11 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
             public void onPanelSlide(View view, float v) {
                 //TODO 拖动时 设置Toolbar内容隐藏
                 curPosition = String.valueOf(v);
+                if (curPosition.equals("1.0")){
+                    mark_main_float.setVisibility(View.VISIBLE);
+                }else {
+                    mark_main_float.setVisibility(View.GONE);
+                }
                 Log.d("SlidePosition",curPosition);
             }
 
@@ -144,7 +189,7 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (curPosition.equals("0.0")){
+                if (mark_main_float.getVisibility()==View.GONE){
                     return true;
                 }
                 return false;
@@ -172,7 +217,7 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
 
         //configure a builder with properties shared by all instances and just clone it for future use
         //since adapter(ITransitionAdapter) is set, simply call buildFor(mUnifiedAdapter) would add the resultant ViewTransition to the adapter
-        ViewTransitionBuilder baseBuilder = ViewTransitionBuilder.transit(mCollapsingToolbarLayout).interpolator(mInterpolator);
+        ViewTransitionBuilder baseBuilder = ViewTransitionBuilder.transit(llContent).interpolator(mInterpolator);
         ViewTransitionBuilder builder;
         // ((ImageView) findViewById(R.id.content_bg)).setColorFilter(null);
         boolean setHalfHeight = true;
@@ -182,11 +227,11 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
         builder = baseBuilder.clone();
         builder.scale(0.8f).rotationX(40).translationYAsFractionOfHeight(-1f).buildFor(mUnifiedAdapter);
 
-        builder = baseBuilder.clone().target(findViewById(R.id.ctl)).rotationX(90f).scale(0.8f).translationYAsFractionOfHeight(-0.25f);
+        builder = baseBuilder.clone().target(findViewById(R.id.ll_content)).rotationX(90f).scale(0.8f).translationYAsFractionOfHeight(-0.4f);
         builder.buildFor(mUnifiedAdapter);
-        builder.target(findViewById(R.id.ctl)).buildFor(mUnifiedAdapter);
+        builder.target(findViewById(R.id.ll_content)).buildFor(mUnifiedAdapter);
 
-        builder = baseBuilder.clone().target(findViewById(R.id.ctl));
+        builder = baseBuilder.clone().target(findViewById(R.id.ll_content));
         ViewTransitionBuilder.Cascade cascade = new ViewTransitionBuilder.Cascade(1f);
         cascade.reverse = true;
         builder.transitViewGroup(new ViewTransitionBuilder.ViewGroupTransition() {
@@ -206,7 +251,7 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
         Window window = getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
         int height = rectangle.bottom - rectangle.top;
-        params.height = halfHeight ? height* 5/6 : height;
+        params.height = halfHeight ? height* 3/4 : height;
         supl.requestLayout();
     }
 

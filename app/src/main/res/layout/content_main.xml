@@ -10,82 +10,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:layout_marginTop="?attr/actionBarSize"
     sothree:umanoFadeColor="#43CB4F"
-    sothree:umanoPanelHeight="300dp"
+    sothree:umanoPanelHeight="130dp"
     sothree:umanoShadowHeight="0dp">
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/ll_content"
+        app:layout_collapseMode="parallax"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-        <android.support.design.widget.AppBarLayout
+        android:orientation="vertical"
+        >
+        <com.zhy.android.percent.support.PercentRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/ctl"
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#43CB4F">
+
+            <com.zhy.android.percent.support.PercentFrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:layout_centerHorizontal="true"
+                app:layout_heightPercent="90%w"
+                app:layout_widthPercent="90%w"
                 >
-                <RelativeLayout
-                    app:layout_collapseMode="parallax"
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <com.zhy.android.percent.support.PercentRelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#43CB4F">
-
-                        <com.zhy.android.percent.support.PercentFrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            app:layout_heightPercent="90%w"
-                            app:layout_widthPercent="90%w"
-                            >
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:layout_heightPercent="100%w"
-                                app:layout_widthPercent="100%w"
-                                android:layout_gravity="center"
-                                android:src="@drawable/homepage_bg"
-                                />
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_heightPercent="33%w"
-                                app:layout_widthPercent="33%w"
-                                android:layout_gravity="center"
-                                android:src="@drawable/home_mark_icon"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dp"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:text="888"
-                                android:textColor="#43CB4F"
-                                android:textSize="30sp"
-                                />
-                        </com.zhy.android.percent.support.PercentFrameLayout>
-                    </com.zhy.android.percent.support.PercentRelativeLayout>
-                </RelativeLayout>
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/tb"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_collapseMode="pin"/>
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
-    </android.support.design.widget.CoordinatorLayout>
+                    android:layout_height="match_parent"
+                    app:layout_heightPercent="100%w"
+                    app:layout_widthPercent="100%w"
+                    android:layout_gravity="center"
+                    android:src="@drawable/homepage_bg"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_heightPercent="33%w"
+                    app:layout_widthPercent="33%w"
+                    android:layout_gravity="center"
+                    android:src="@drawable/home_mark_icon"
+                    />
+                <TextView
+                    android:id="@+id/mark_main_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="888"
+                    android:textColor="#43CB4F"
+                    android:textSize="30sp"
+                    />
+            </com.zhy.android.percent.support.PercentFrameLayout>
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
+        android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
