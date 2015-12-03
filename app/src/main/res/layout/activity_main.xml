@@ -45,7 +45,6 @@
     <!-- The navigation drawer -->
     <RelativeLayout
         android:id="@+id/drawer_left"
-        android:clickable="true"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start">

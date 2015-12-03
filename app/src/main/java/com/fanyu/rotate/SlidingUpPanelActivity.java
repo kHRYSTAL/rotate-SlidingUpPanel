@@ -118,6 +118,14 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
             }
         });
 
+        LinearLayout ll_personal_info = (LinearLayout) findViewById(R.id.ll_personal_info);
+        ll_personal_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(SlidingUpPanelActivity.this,"ll_personal_info",Toast.LENGTH_LONG).show();
+            }
+        });
+
         //set up the adapter
         SlidingUpPanelLayoutAdapter mSlidingUpPanelLayoutAdapter = new SlidingUpPanelLayoutAdapter();
         supl.setPanelSlideListener(mSlidingUpPanelLayoutAdapter);
