@@ -10,7 +10,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    android:layout_marginTop="?attr/actionBarSize"
     sothree:umanoFadeColor="#43CB4F"
     sothree:umanoPanelHeight="130dp"
     sothree:umanoShadowHeight="0dp">
