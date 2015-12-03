@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,10 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
 
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.ctl);
-        mToolbar = (Toolbar) findViewById(R.id.tb);
         SlidingUpPanelLayout supl = ((SlidingUpPanelLayout) findViewById(R.id.sliding_layout));
         //supl.setEnableDragViewTouchEvents(false);
 
@@ -205,6 +208,29 @@ public class SlidingUpPanelActivity extends AppCompatActivity implements View.On
         int height = rectangle.bottom - rectangle.top;
         params.height = halfHeight ? height* 5/6 : height;
         supl.requestLayout();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
